@@ -89,6 +89,7 @@ public class ModItemGroup {
                        entries.add(ModBlocks.DRIFTWOOD_PLANKS);
                        entries.add(ModBlocks.DRIFTWOOD_SAPLING);
                        entries.add(ModBlocks.DRIFTWOOD_LEAVES);
+                       entries.add(ModBlocks.COLORED_LEAVES);
 
                     }).build());
 
