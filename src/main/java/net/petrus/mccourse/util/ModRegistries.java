@@ -1,5 +1,6 @@
 package net.petrus.mccourse.util;
 
+import dev.architectury.platform.Mod;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
@@ -7,7 +8,12 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
+import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
+import net.minecraft.block.Block;
+import net.minecraft.util.Identifier;
+import net.petrus.mccourse.MCCourseMod;
 import net.petrus.mccourse.block.ModBlocks;
 import net.petrus.mccourse.command.ReturnHomeCommand;
 import net.petrus.mccourse.command.SetHomeCommand;
@@ -37,6 +43,28 @@ public class ModRegistries {
         registerStrippables();
         registerFlammables();
         registerAttributes();
+        createPortal();
+        registerOxidizables();
+    }
+
+    private static void registerOxidizables() {
+        OxidizableBlocksRegistry.registerOxidizableBlockPair(ModBlocks.RUBY_BLOCK, ModBlocks.RUBY_BLOCK_1);
+        OxidizableBlocksRegistry.registerOxidizableBlockPair(ModBlocks.RUBY_BLOCK_1, ModBlocks.RUBY_BLOCK_2);
+        OxidizableBlocksRegistry.registerOxidizableBlockPair(ModBlocks.RUBY_BLOCK_2, ModBlocks.RUBY_BLOCK_3);
+
+        OxidizableBlocksRegistry.registerWaxableBlockPair(ModBlocks.RUBY_BLOCK, ModBlocks.WAXED_RUBY_BLOCK);
+        OxidizableBlocksRegistry.registerWaxableBlockPair(ModBlocks.RUBY_BLOCK_1, ModBlocks.WAXED_RUBY_BLOCK_1);
+        OxidizableBlocksRegistry.registerWaxableBlockPair(ModBlocks.RUBY_BLOCK_2, ModBlocks.WAXED_RUBY_BLOCK_2);
+        OxidizableBlocksRegistry.registerWaxableBlockPair(ModBlocks.RUBY_BLOCK_3, ModBlocks.WAXED_RUBY_BLOCK_3);
+    }
+
+    private static void createPortal() {
+        CustomPortalBuilder.beginPortal()
+                .frameBlock(ModBlocks.PINK_GARNET_BLOCK)
+                .lightWithItem(ModItems.CATTAIL)
+                .destDimID(new Identifier(MCCourseMod.MOD_ID, "kaupendim"))
+                .tintColor(0xc76efa)
+                .registerPortal();
     }
 
     private static void registerFuels() {

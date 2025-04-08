@@ -5,16 +5,12 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.petrus.mccourse.block.ModBlocks;
 import net.petrus.mccourse.block.custom.CattailCropBlock;
 import net.petrus.mccourse.block.custom.CauliflowerCropBlock;
-import net.petrus.mccourse.block.custom.ModStandingSignBlock;
 import net.petrus.mccourse.block.custom.PinkGarnetLampBlock;
 import net.petrus.mccourse.fluid.ModFluids;
 import net.petrus.mccourse.item.ModItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.data.client.*;
 import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.item.ArmorItem;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -72,9 +68,20 @@ public class ModModelProvider extends FabricModelProvider {
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(ModBlocks.PINK_GARNET_LAMP_BLOCK)
                 .coordinate(BlockStateModelGenerator.createBooleanModelMap(PinkGarnetLampBlock.CLICKED, identifier2, identifier)));
 
+        blockStateModelGenerator.registerSingleton(ModBlocks.COLORED_LEAVES, TexturedModel.LEAVES);
+
         blockStateModelGenerator.registerCrop(ModBlocks.CATTAIL_CROP, CattailCropBlock.AGE, 0, 1, 2, 3, 4, 5, 6, 7, 8);
 
-        blockStateModelGenerator.registerSingleton(ModBlocks.COLORED_LEAVES, TexturedModel.LEAVES);
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.RUBY_BLOCK);
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.RUBY_BLOCK_1);
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.RUBY_BLOCK_2);
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.RUBY_BLOCK_3);
+
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.WAXED_RUBY_BLOCK);
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.WAXED_RUBY_BLOCK_1);
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.WAXED_RUBY_BLOCK_2);
+        blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.WAXED_RUBY_BLOCK_3);
+
     }
 
     @Override

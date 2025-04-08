@@ -47,11 +47,11 @@ public class ModItemGroup {
                        entries.add(ModItems.PORCUPINE_SPAWN_EGG);
 
                        entries.add(ModItems.DICE);
-
                        entries.add(ModItems.CATTAIL_SEEDS);
                        entries.add(ModItems.CATTAIL);
 
-                       entries.add(ModItems.DRIFTWOOD_BOAT);
+
+                        entries.add(ModItems.DRIFTWOOD_BOAT);
                        entries.add(ModItems.DRIFTWOOD_CHEST_BOAT);
 
                        entries.add(ModFluids.SOAP_WATER_BUCKET);
@@ -89,7 +89,19 @@ public class ModItemGroup {
                        entries.add(ModBlocks.DRIFTWOOD_PLANKS);
                        entries.add(ModBlocks.DRIFTWOOD_SAPLING);
                        entries.add(ModBlocks.DRIFTWOOD_LEAVES);
-                       //entries.add(ModBlocks.COLORED_LEAVES);
+
+                       entries.add(ModBlocks.COLORED_LEAVES);
+
+                       entries.add(ModBlocks.RUBY_BLOCK);
+                       entries.add(ModBlocks.RUBY_BLOCK_1);
+                       entries.add(ModBlocks.RUBY_BLOCK_2);
+                       entries.add(ModBlocks.RUBY_BLOCK_3);
+
+                       entries.add(ModBlocks.WAXED_RUBY_BLOCK);
+                       entries.add(ModBlocks.WAXED_RUBY_BLOCK_1);
+                       entries.add(ModBlocks.WAXED_RUBY_BLOCK_2);
+                       entries.add(ModBlocks.WAXED_RUBY_BLOCK_3);
+
 
                     }).build());
 

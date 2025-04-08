@@ -1,5 +1,6 @@
 package net.petrus.mccourse.block.custom;
 
+import net.petrus.mccourse.item.ModItems;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.server.world.ServerWorld;
@@ -11,7 +12,6 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.petrus.mccourse.item.ModItems;
 
 public class CattailCropBlock extends CropBlock {
     public static final int FIRST_STAGE_MAX_AGE = 7;

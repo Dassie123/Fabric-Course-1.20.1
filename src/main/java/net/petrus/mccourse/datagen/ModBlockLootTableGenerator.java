@@ -54,6 +54,5 @@ public class ModBlockLootTableGenerator extends FabricBlockLootTableProvider {
                                 .exactMatch(CauliflowerCropBlock.AGE, 8)));
         addDrop(ModBlocks.CATTAIL_CROP, cropDrops(ModBlocks.CATTAIL_CROP, ModItems.CATTAIL, ModItems.CATTAIL_SEEDS, builder));
 
-
     }
 }

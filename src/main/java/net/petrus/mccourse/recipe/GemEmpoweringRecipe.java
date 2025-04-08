@@ -1,26 +1,30 @@
 package net.petrus.mccourse.recipe;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
 
-public class GemEmpoweringRecipe implements Recipe<SimpleInventory> {
-    private final Identifier id;
-    private final ItemStack output;
-    private final DefaultedList<Ingredient> recipeItems;
+import java.util.List;
 
-    public GemEmpoweringRecipe(Identifier id, ItemStack output, DefaultedList<Ingredient> recipeItems) {
-        this.id = id;
+public class GemEmpoweringRecipe implements Recipe<SimpleInventory> {
+    private final ItemStack output;
+    private final List<Ingredient> recipeItems;
+    private final int craftTime;
+    private final int energyAmount;
+
+    public GemEmpoweringRecipe(List<Ingredient> recipeItems, ItemStack output, int craftTime, int energyAmount) {
         this.output = output;
         this.recipeItems = recipeItems;
+        this.craftTime = craftTime;
+        this.energyAmount = energyAmount;
     }
 
     @Override
@@ -43,13 +47,16 @@ public class GemEmpoweringRecipe implements Recipe<SimpleInventory> {
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
-        return output.copy();
+    public ItemStack getResult(DynamicRegistryManager registryManager) {
+        return output;
     }
 
-    @Override
-    public Identifier getId() {
-        return this.id;
+    public int getCraftTime() {
+        return craftTime;
+    }
+
+    public int getEnergyAmount() {
+        return energyAmount;
     }
 
     @Override
@@ -64,7 +71,9 @@ public class GemEmpoweringRecipe implements Recipe<SimpleInventory> {
 
     @Override
     public DefaultedList<Ingredient> getIngredients() {
-        return this.recipeItems;
+        DefaultedList list = DefaultedList.ofSize(this.recipeItems.size());
+        list.addAll(recipeItems);
+        return list;
     }
 
     public static class Type implements RecipeType<GemEmpoweringRecipe> {
@@ -78,30 +87,36 @@ public class GemEmpoweringRecipe implements Recipe<SimpleInventory> {
         public static final String ID = "gem_empowering";
         // this is the name given in the json file
 
-        @Override
-        public GemEmpoweringRecipe read(Identifier id, JsonObject json) {
-            ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "output"));
+        public static final Codec<GemEmpoweringRecipe> CODEC = RecordCodecBuilder.create(in -> in.group(
+                validateAmount(Ingredient.DISALLOW_EMPTY_CODEC, 9).fieldOf("ingredients").forGetter(GemEmpoweringRecipe::getIngredients),
+                RecipeCodecs.CRAFTING_RESULT.fieldOf("output").forGetter(r -> r.output),
+                Codecs.POSITIVE_INT.fieldOf("craftTime").forGetter(r -> r.craftTime),
+                Codecs.POSITIVE_INT.fieldOf("energyAmount").forGetter(r -> r.energyAmount)
+        ).apply(in, GemEmpoweringRecipe::new));
 
-            JsonArray ingredients = JsonHelper.getArray(json, "ingredients");
-            DefaultedList<Ingredient> inputs = DefaultedList.ofSize(1, Ingredient.EMPTY);
-
-            for (int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
-            }
-
-            return new GemEmpoweringRecipe(id, output, inputs);
+        private static Codec<List<Ingredient>> validateAmount(Codec<Ingredient> delegate, int max) {
+            return Codecs.validate(Codecs.validate(
+                    delegate.listOf(), list -> list.size() > max ? DataResult.error(() -> "Recipe has too many ingredients!") : DataResult.success(list)
+            ), list -> list.isEmpty() ? DataResult.error(() -> "Recipe has no ingredients!") : DataResult.success(list));
         }
 
         @Override
-        public GemEmpoweringRecipe read(Identifier id, PacketByteBuf buf) {
+        public Codec<GemEmpoweringRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public GemEmpoweringRecipe read(PacketByteBuf buf) {
             DefaultedList<Ingredient> inputs = DefaultedList.ofSize(buf.readInt(), Ingredient.EMPTY);
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromPacket(buf));
             }
 
+            int craftTime = buf.readInt();
+            int energyAmount = buf.readInt();
             ItemStack output = buf.readItemStack();
-            return new GemEmpoweringRecipe(id, output, inputs);
+            return new GemEmpoweringRecipe(inputs, output, craftTime, energyAmount);
         }
 
         @Override
@@ -110,7 +125,9 @@ public class GemEmpoweringRecipe implements Recipe<SimpleInventory> {
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.write(buf);
             }
-            buf.writeItemStack(recipe.getOutput(null));
+            buf.writeInt(recipe.craftTime);
+            buf.writeInt(recipe.energyAmount);
+            buf.writeItemStack(recipe.getResult(null));
         }
     }
 }

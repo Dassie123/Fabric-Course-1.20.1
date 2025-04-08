@@ -26,6 +26,9 @@
 		],
 		"rei_client": [
 			"net.petrus.mccourse.compat.MCCourseModREIClientPlugin"
+		],
+		"terrablender": [
+			"net.petrus.mccourse.world.biome.ModTerraBlenderAPI"
 		]
 	},
 	"mixins": [
