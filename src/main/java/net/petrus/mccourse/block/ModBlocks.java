@@ -129,6 +129,9 @@ public static final Block WAXED_RUBY_BLOCK = registerBlock("waxed_ruby_block",
     public static final Block WAXED_RUBY_BLOCK_3 = registerBlock("waxed_ruby_block_3",
             new Block(FabricBlockSettings.copyOf(Blocks.STONE)));
 
+    public static final Block KAUPEN_FURNACE = registerBlock("kaupen_furnace",
+            new KaupenFurnaceBlock(FabricBlockSettings.copyOf(Blocks.STONE)));
+
 
     private static Block registerBlockWithoutBlockItem(String name, Block block) {
         return Registry.register(Registries.BLOCK, new Identifier(MCCourseMod.MOD_ID, name), block);

@@ -27,6 +27,7 @@ import net.petrus.mccourse.networking.ModMessages;
 import net.petrus.mccourse.particle.ModParticles;
 import net.petrus.mccourse.particle.PinkGarnetParticle;
 import net.petrus.mccourse.screen.GemEmpoweringScreen;
+import net.petrus.mccourse.screen.KaupenFurnaceScreen;
 import net.petrus.mccourse.screen.ModScreenHandlers;
 import net.petrus.mccourse.util.ModModelPredicateProvider;
 import net.petrus.mccourse.util.ModWoodTypes;
@@ -64,6 +65,7 @@ public class MCCourseModClient implements ClientModInitializer {
         ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> new ModelIdentifier(MCCourseMod.MOD_ID, "radiation_staff_3d", "inventory"));
 
         HandledScreens.register(ModScreenHandlers.GEM_EMPOWERING_SCREEN_HANDLER, GemEmpoweringScreen::new);
+        HandledScreens.register(ModScreenHandlers.KAUPEN_FURNACE_SCREEN_HANDLER, KaupenFurnaceScreen::new);
 
         ModMessages.registerS2CPackets();
 
